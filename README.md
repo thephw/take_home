@@ -5,8 +5,12 @@ Help folks figure out their take home pay and taxes. PRs welcome, add yo' own st
 Check for your own state and federal constants.
 
 # Basic Usage
+```
+$ gem install take_home
+```
 
 ```
+require 'take_home'
 you = TaxablePerson.single("georgia", 100_000)
 you.take_home
 => 71790.5
