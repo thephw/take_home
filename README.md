@@ -32,7 +32,7 @@ By default the new TaxablePerson objects accept an dollar income and the followi
 ## Long Form
 
 ```
-tchalla = TaxablePerson.custom("head_of_household", "wakanda", 48_000, opts = {
+tchalla = TaxablePerson.single("wakanda", 48_000, opts = {
     state_deductions: 4600,
     state_tax_rates: {
       750 => 0.01,
