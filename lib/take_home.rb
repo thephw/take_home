@@ -1,4 +1,4 @@
-require './fy2020.rb'
+require_relative 'fy2020.rb'
 
 class TaxablePerson
   attr_reader :income
