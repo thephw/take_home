@@ -1,29 +1,29 @@
 module TaxConstants
   module FY2020
-    SOCIAL_SECURITY_WAGE_BASE = 137700
+    SOCIAL_SECURITY_WAGE_BASE = 137_700
     SOCIAL_SECURITY_TAX_RATE = 0.062
     MEDICARE_TAX_RATE = 0.0145
 
-    FEDERAL_SINGLE_STD_DEDUCTION = 12200
-    FEDERAL_MARRIED_STD_DEDUCTION = 24400
+    FEDERAL_SINGLE_STD_DEDUCTION = 12_200
+    FEDERAL_MARRIED_STD_DEDUCTION = 24_400
 
     FEDERAL_SINGLE_INCOME_TAX_RATES = {
-        9700 => 0.10,
-       39475 => 0.12,
-       84200 => 0.22,
-      160725 => 0.24,
-      204100 => 0.32,
-      510300 => 0.35,
+         9700 => 0.10,
+       39_475 => 0.12,
+       84_200 => 0.22,
+      160_725 => 0.24,
+      204_100 => 0.32,
+      510_300 => 0.35,
       Float::INFINITY => 0.37
     }
 
     FEDERAL_MARRIED_INCOME_TAX_RATES = {
-       19400 => 0.10,
-       78950 => 0.12,
-      168400 => 0.22,
-      321450 => 0.24,
-      408200 => 0.32,
-      612350 => 0.35,
+       19_400 => 0.10,
+       78_950 => 0.12,
+      168_400 => 0.22,
+      321_450 => 0.24,
+      408_200 => 0.32,
+      612_350 => 0.35,
       Float::INFINITY => 0.37
     }
 
@@ -40,11 +40,11 @@ module TaxConstants
     }
 
     GEORGIA_MARRIED_INCOME_TAX_RATES = {
-      1000 => 0.01,
-      3000 => 0.02,
-      5000 => 0.03,
-      7000 => 0.04,
-      10000 => 0.05,
+        1000 => 0.01,
+        3000 => 0.02,
+        5000 => 0.03,
+        7000 => 0.04,
+      10_000 => 0.05,
       Float::INFINITY => 0.0575
     }
 
