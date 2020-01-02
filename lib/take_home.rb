@@ -69,7 +69,7 @@ class TaxablePerson
     self.federal_tax_rates = opts[:federal_tax_rates] || TaxConstants::FY2020::LOOKUP[tax_type][:federal][:rates]
     self.social_security_tax_rate = opts[:social_security_tax_rate] || TaxConstants::FY2020::SOCIAL_SECURITY_TAX_RATE
     self.social_security_wage_base = opts[:social_security_wage_base] || TaxConstants::FY2020::SOCIAL_SECURITY_WAGE_BASE
-    self.medicare_tax_rate = opts[:medicare_tax_rate] || TaxConstants::FY2020::MEDICARE_TAX_RATE
+    self.medicare_tax_rate = opts[:medicare_tax_rate] || calculate_medicare_tax_rate
     nil
   end
 
@@ -92,5 +92,21 @@ class TaxablePerson
       last_cap = cap
     end
     taxes
+  end
+
+  def calculate_medicare_tax_rate
+    surplus_limit = case tax_type
+    when :single
+      TaxConstants::FY2020::MEDICARE_SURPLUS_WAGE_BASE_SINGLE
+    when :married
+      TaxConstants::FY2020::MEDICARE_SURPLUS_WAGE_BASE_MARRIED
+    else
+      throw "Unknown filling status (tax_type)"
+    end
+    tax_rate = TaxConstants::FY2020::MEDICARE_TAX_RATE
+    if income >= surplus_limit
+      tax_rate += TaxConstants::FY2020::MEDICARE_SURPLUS_TAX_RATE
+    end
+    tax_rate
   end
 end
