@@ -18,11 +18,11 @@ class TaxablePerson
   end
 
   def federal_income_taxes
-    marginal_taxes(income, federal_deductions, federal_tax_rates)
+    marginal_taxes(income, federal_deduction, federal_tax_rates)
   end
 
   def state_income_taxes
-    marginal_taxes(income, state_deductions, state_tax_rates)
+    marginal_taxes(income, state_deduction, state_tax_rates)
   end
 
   def payroll_taxes
@@ -30,15 +30,11 @@ class TaxablePerson
   end
 
   def social_security_taxes
-    if income < social_security_wage_base
-      taxes = income * social_security_tax_rate
-    else
-      taxes = social_security_wage_base * social_security_tax_rate
-    end
+    marginal_taxes(income, social_security_deduction, social_security_tax_rates)
   end
 
   def medicare_taxes
-    taxes = medicare_tax_rate * income
+    marginal_taxes(income, medicare_deduction, medicare_tax_rates)
   end
 
   def effective_tax_rate
@@ -56,20 +52,24 @@ class TaxablePerson
   attr_accessor :income
   attr_accessor :state_tax_rates
   attr_accessor :federal_tax_rates
-  attr_accessor :medicare_tax_rate
-  attr_accessor :social_security_tax_rate
-  attr_accessor :social_security_wage_base
-  attr_accessor :federal_deductions
-  attr_accessor :state_deductions
+  attr_accessor :medicare_tax_rates
+  attr_accessor :social_security_tax_rates
+  attr_accessor :federal_deduction
+  attr_accessor :state_deduction
+  attr_accessor :social_security_deduction
+  attr_accessor :medicare_deduction
 
   def configure(opts)
-    self.state_deductions = opts[:state_deductions] || TaxConstants::FY2020::LOOKUP[tax_type][state][:deduction]
-    self.state_tax_rates = opts[:state_tax_rates] || TaxConstants::FY2020::LOOKUP[tax_type][state][:rates]
-    self.federal_deductions = opts[:federal_deductions] || TaxConstants::FY2020::LOOKUP[tax_type][:federal][:deduction]
-    self.federal_tax_rates = opts[:federal_tax_rates] || TaxConstants::FY2020::LOOKUP[tax_type][:federal][:rates]
-    self.social_security_tax_rate = opts[:social_security_tax_rate] || TaxConstants::FY2020::SOCIAL_SECURITY_TAX_RATE
-    self.social_security_wage_base = opts[:social_security_wage_base] || TaxConstants::FY2020::SOCIAL_SECURITY_WAGE_BASE
-    self.medicare_tax_rate = opts[:medicare_tax_rate] || calculate_medicare_tax_rate
+    constants = TaxConstants::FY2020::LOOKUP[tax_type]
+    self.state_tax_rates = opts[:state_tax_rates] || constants[state][:rates]
+    self.federal_tax_rates = opts[:federal_tax_rates] || constants[:federal][:rates]
+    self.social_security_tax_rates = opts[:social_security_tax_rate] || constants[:social_security][:rates]
+    self.medicare_tax_rates = opts[:medicare_tax_rate] || constants[:medicare][:rates]
+
+    self.federal_deduction = opts[:federal_deduction] || constants[:federal][:deduction]
+    self.state_deduction = opts[:state_deduction] || constants[state][:deduction]
+    self.social_security_deduction = opts[:social_security_deduction] || constants[:social_security][:deduction]
+    self.medicare_deduction = opts[:medicare_deduction] || constants[:medicare][:deduction]
     nil
   end
 
@@ -80,9 +80,9 @@ class TaxablePerson
     configure(opts)
   end
 
-  def marginal_taxes(income, deductions, rates)
+  def marginal_taxes(income, deduction, rates)
     #Calculate AGI
-    income = income - deductions
+    income = income - deduction
     #Calculate Income Taxes
     taxes = 0
     last_cap = 0
@@ -92,21 +92,5 @@ class TaxablePerson
       last_cap = cap
     end
     taxes
-  end
-
-  def calculate_medicare_tax_rate
-    surplus_limit = case tax_type
-    when :single
-      TaxConstants::FY2020::MEDICARE_SURPLUS_WAGE_BASE_SINGLE
-    when :married
-      TaxConstants::FY2020::MEDICARE_SURPLUS_WAGE_BASE_MARRIED
-    else
-      throw "Unknown filling status (tax_type)"
-    end
-    tax_rate = TaxConstants::FY2020::MEDICARE_TAX_RATE
-    if income >= surplus_limit
-      tax_rate += TaxConstants::FY2020::MEDICARE_SURPLUS_TAX_RATE
-    end
-    tax_rate
   end
 end
