@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "Pushing to github"
+git tag $VERSION
+git push origin $VERSION
+
+echo "Building $VERSION"
+gem build take_home.gemspec
+gem push "take_home-$VERSION.gem"
+
