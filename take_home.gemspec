@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = "take_home"
-  s.version     = "1.0.1"
-  s.date        = "2020-01-01"
+  s.version     = "1.0.3"
+  s.date        = "2020-05-25"
   s.summary     = "Calculate take home pay and taxes"
   s.description = "Help folks figure out their take home pay and taxes."
   s.authors     = ["Patrick Wiseman"]
