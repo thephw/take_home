@@ -1,11 +1,23 @@
 module TaxConstants
   module FY2020
-    SOCIAL_SECURITY_WAGE_BASE = 137_700
-    SOCIAL_SECURITY_TAX_RATE = 0.062
-    MEDICARE_TAX_RATE = 0.0145
-
+    NO_DEDUCTION = 0
     FEDERAL_SINGLE_STD_DEDUCTION = 12_200
     FEDERAL_MARRIED_STD_DEDUCTION = 24_400
+
+    SOCIAL_SECURITY_TAX_RATES = {
+      137_700 => 0.062,
+      Float::INFINITY => 0.0,
+    }
+
+    MEDICARE_SINGLE_TAX_RATES = {
+      200_000 => 0.0145,
+      Float::INFINITY => 0.0235,
+    }
+
+    MEDICARE_MARRIED_TAX_RATES = {
+      250_000 => 0.0145,
+      Float::INFINITY => 0.0235,
+    }
 
     FEDERAL_SINGLE_INCOME_TAX_RATES = {
          9700 => 0.10,
@@ -54,6 +66,14 @@ module TaxConstants
           deduction: FEDERAL_SINGLE_STD_DEDUCTION,
           rates: FEDERAL_SINGLE_INCOME_TAX_RATES,
         },
+        social_security: {
+          deduction: NO_DEDUCTION,
+          rates: SOCIAL_SECURITY_TAX_RATES,
+        },
+        medicare: {
+          deduction: NO_DEDUCTION,
+          rates: MEDICARE_SINGLE_TAX_RATES,
+        },
         georgia: {
           deduction: GEORGIA_SINGLE_STD_DEDUCTION,
           rates: GEORGIA_SINGLE_INCOME_TAX_RATES,
@@ -63,6 +83,14 @@ module TaxConstants
         federal: {
           deduction: FEDERAL_MARRIED_STD_DEDUCTION,
           rates: FEDERAL_MARRIED_INCOME_TAX_RATES,
+        },
+        social_security: {
+          deduction: NO_DEDUCTION,
+          rates: SOCIAL_SECURITY_TAX_RATES,
+        },
+        medicare: {
+          deduction: NO_DEDUCTION,
+          rates: MEDICARE_MARRIED_TAX_RATES,
         },
         georgia: {
           deduction: GEORGIA_MARRIED_STD_DEDUCTION,
