@@ -60,7 +60,7 @@ class TaxablePerson
   attr_accessor :medicare_deduction
 
   def configure(opts)
-    constants = TaxConstants::FY2020::LOOKUP[tax_type]
+    constants = TaxConstants::FY2022::LOOKUP[tax_type]
     self.state_tax_rates = opts[:state_tax_rates] || constants[state][:rates]
     self.federal_tax_rates = opts[:federal_tax_rates] || constants[:federal][:rates]
     self.social_security_tax_rates = opts[:social_security_tax_rate] || constants[:social_security][:rates]
